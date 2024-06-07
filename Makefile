@@ -7,6 +7,7 @@ endif
 PACKAGE_NAME=async-profiler-$(PROFILER_VERSION)-$(OS_TAG)-$(ARCH_TAG)
 PACKAGE_DIR=/tmp/$(PACKAGE_NAME)
 
+
 ASPROF=bin/asprof
 JFRCONV=bin/jfrconv
 LIB_PROFILER=lib/libasyncProfiler.$(SOEXT)
@@ -19,10 +20,11 @@ CXX=$(CROSS_COMPILE)g++
 STRIP=$(CROSS_COMPILE)strip
 
 CFLAGS=-O3 -fno-exceptions
-CXXFLAGS=-O3 -fno-exceptions -fno-omit-frame-pointer -fvisibility=hidden
+CXXFLAGS=-O3 -fno-exceptions -fno-omit-frame-pointer -fvisibility=hidden -std=c++14
 CPPFLAGS=
 DEFS=-DPROFILER_VERSION=\"$(PROFILER_VERSION)\"
 INCLUDES=-I$(JAVA_HOME)/include -Isrc/helper
+INCLUDES += -I$(CURDIR)/json/single_include
 LIBS=-ldl -lpthread
 MERGE=true
 
@@ -177,7 +179,6 @@ build/$(TEST_JAR): $(TEST_SOURCES) build/$(CONVERTER_JAR)
 	mkdir -p build/test
 	$(JAVAC) --release 8 -cp "build/jar/*:build/converter/*" -d build/test $(TEST_SOURCES)
 	$(JAR) cf $@ -C build/test .
-
 
 native:
 	mkdir -p native/linux-x64 native/linux-arm64 native/macos

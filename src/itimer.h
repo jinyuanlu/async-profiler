@@ -8,12 +8,11 @@
 
 #include "cpuEngine.h"
 
-
 class ITimer : public CpuEngine {
-  public:
-    Error check(Arguments& args);
-    Error start(Arguments& args);
-    void stop();
+public:
+  Error check(Arguments &args);
+  Error start(Arguments &args);
+  void stop();
 };
 
 #endif // _ITIMER_H

@@ -8,11 +8,11 @@
 
 #include <jvmti.h>
 
-
 class JavaAPI {
-  public:
-    static void registerNatives(jvmtiEnv* jvmti, JNIEnv* jni);
-    static bool startHttpServer(jvmtiEnv* jvmti, JNIEnv* jni, const char* address);
+public:
+  static void registerNatives(jvmtiEnv *jvmti, JNIEnv *jni);
+  static bool startHttpServer(jvmtiEnv *jvmti, JNIEnv *jni,
+                              const char *address);
 };
 
 #endif // _JAVAAPI_H

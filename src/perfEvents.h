@@ -16,33 +16,34 @@ class PerfEventType;
 class StackContext;
 
 class PerfEvents : public CpuEngine {
-  private:
-    static int _max_events;
-    static PerfEvent* _events;
-    static PerfEventType* _event_type;
-    static Ring _ring;
-    static bool _use_mmap_page;
+private:
+  static int _max_events;
+  static PerfEvent *_events;
+  static PerfEventType *_event_type;
+  static Ring _ring;
+  static bool _use_mmap_page;
 
-    static u64 readCounter(siginfo_t* siginfo, void* ucontext);
-    static void signalHandler(int signo, siginfo_t* siginfo, void* ucontext);
-    static void signalHandlerJ9(int signo, siginfo_t* siginfo, void* ucontext);
+  static u64 readCounter(siginfo_t *siginfo, void *ucontext);
+  static void signalHandler(int signo, siginfo_t *siginfo, void *ucontext);
+  static void signalHandlerJ9(int signo, siginfo_t *siginfo, void *ucontext);
 
-    int createForThread(int tid);
-    void destroyForThread(int tid);
+  int createForThread(int tid);
+  void destroyForThread(int tid);
 
-  public:
-    Error check(Arguments& args);
-    Error start(Arguments& args);
-    void stop();
+public:
+  Error check(Arguments &args);
+  Error start(Arguments &args);
+  void stop();
 
-    const char* title();
-    const char* units();
+  const char *title();
+  const char *units();
 
-    static int walk(int tid, void* ucontext, const void** callchain, int max_depth, StackContext* java_ctx);
-    static void resetBuffer(int tid);
+  static int walk(int tid, void *ucontext, const void **callchain,
+                  int max_depth, StackContext *java_ctx);
+  static void resetBuffer(int tid);
 
-    static bool supported();
-    static const char* getEventName(int event_id);
+  static bool supported();
+  static const char *getEventName(int event_id);
 };
 
 #else
@@ -50,29 +51,25 @@ class PerfEvents : public CpuEngine {
 class StackContext;
 
 class PerfEvents : public CpuEngine {
-  public:
-    Error check(Arguments& args) {
-        return Error("PerfEvents are not supported on this platform");
-    }
+public:
+  Error check(Arguments &args) {
+    return Error("PerfEvents are not supported on this platform");
+  }
 
-    Error start(Arguments& args) {
-        return Error("PerfEvents are not supported on this platform");
-    }
+  Error start(Arguments &args) {
+    return Error("PerfEvents are not supported on this platform");
+  }
 
-    static int walk(int tid, void* ucontext, const void** callchain, int max_depth, StackContext* java_ctx) {
-        return 0;
-    }
+  static int walk(int tid, void *ucontext, const void **callchain,
+                  int max_depth, StackContext *java_ctx) {
+    return 0;
+  }
 
-    static void resetBuffer(int tid) {
-    }
+  static void resetBuffer(int tid) {}
 
-    static bool supported() {
-        return false;
-    }
+  static bool supported() { return false; }
 
-    static const char* getEventName(int event_id) {
-        return NULL;
-    }
+  static const char *getEventName(int event_id) { return NULL; }
 };
 
 #endif // __linux__

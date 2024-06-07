@@ -8,21 +8,18 @@
 
 #include "mutex.h"
 
-
 class Hooks {
-  private:
-    static Mutex _patch_lock;
-    static int _patched_libs;
-    static bool _initialized;
+private:
+  static Mutex _patch_lock;
+  static int _patched_libs;
+  static bool _initialized;
 
-  public:
-    static bool init(bool attach);
-    static void shutdown();
-    static void patchLibraries();
+public:
+  static bool init(bool attach);
+  static void shutdown();
+  static void patchLibraries();
 
-    static bool initialized() {
-        return _initialized;
-    }
+  static bool initialized() { return _initialized; }
 };
 
 #endif // _HOOKS_H
