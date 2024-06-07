@@ -10,8 +10,9 @@ API_JAR=jar/async-profiler.jar
 CONVERTER_JAR=jar/jfr-converter.jar
 
 CFLAGS=-O3 -fno-exceptions
-CXXFLAGS=-O3 -fno-exceptions -fno-omit-frame-pointer -fvisibility=hidden
+CXXFLAGS=-O3 -fno-exceptions -fno-omit-frame-pointer -fvisibility=hidden -std=c++14
 INCLUDES=-I$(JAVA_HOME)/include -Isrc/helper
+INCLUDES += -I$(CURDIR)/json/single_include
 LIBS=-ldl -lpthread
 MERGE=true
 
@@ -153,6 +154,7 @@ build/$(CONVERTER_JAR): $(CONVERTER_SOURCES) $(RESOURCES)
 
 test: all
 	test/smoke-test.sh
+	test/alloc-stream-test.sh
 	test/thread-smoke-test.sh
 	test/alloc-smoke-test.sh
 	test/load-library-test.sh

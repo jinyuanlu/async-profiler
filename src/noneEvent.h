@@ -1,48 +1,36 @@
-/*
- * Copyright The async-profiler authors
- * SPDX-License-Identifier: Apache-2.0
- */
-
-#ifndef _WALLCLOCK_H
-#define _WALLCLOCK_H
+#ifndef _NONEVENT_H
+#define _NONEVENT_H
 
 #include "engine.h"
-#include "os.h"
 #include <jvmti.h>
 #include <pthread.h>
 #include <signal.h>
 
-class WallClock : public Engine {
+class NoneEvent : public Engine {
 private:
+  static void signalHandler(int signo, siginfo_t *siginfo, void *ucontext);
   static long _interval;
   static int _signal;
   static bool _sample_idle_threads;
 
   volatile bool _running;
   pthread_t _thread;
-
   void timerLoop();
-
   static void *threadEntry(void *wall_clock) {
-    ((WallClock *)wall_clock)->timerLoop();
+    ((NoneEvent *)wall_clock)->timerLoop();
     return NULL;
   }
 
   static ThreadState getThreadState(void *ucontext);
-
-  static void signalHandler(int signo, siginfo_t *siginfo, void *ucontext);
-
   static long adjustInterval(long interval, int thread_count);
 
 public:
-  const char *title() {
-    return _sample_idle_threads ? "Wall clock profile" : "CPU profile";
-  }
+  const char *name() { return EVENT_NONE; }
 
-  const char *units() { return "ns"; }
+  const char *units() { return "N/A"; }
 
   Error start(Arguments &args);
   void stop();
 };
 
-#endif // _WALLCLOCK_H
+#endif // _NONEVENT_H

@@ -11,38 +11,34 @@
 #ifdef __linux__
 
 class CTimer : public CpuEngine {
-  private:
-    static int _max_timers;
-    static int* _timers;
+private:
+  static int _max_timers;
+  static int *_timers;
 
-    int createForThread(int tid);
-    void destroyForThread(int tid);
+  int createForThread(int tid);
+  void destroyForThread(int tid);
 
-  public:
-    Error check(Arguments& args);
-    Error start(Arguments& args);
-    void stop();
+public:
+  Error check(Arguments &args);
+  Error start(Arguments &args);
+  void stop();
 
-    static bool supported() {
-        return true;
-    }
+  static bool supported() { return true; }
 };
 
 #else
 
 class CTimer : public CpuEngine {
-  public:
-    Error check(Arguments& args) {
-        return Error("CTimer is not supported on this platform");
-    }
+public:
+  Error check(Arguments &args) {
+    return Error("CTimer is not supported on this platform");
+  }
 
-    Error start(Arguments& args) {
-        return Error("CTimer is not supported on this platform");
-    }
+  Error start(Arguments &args) {
+    return Error("CTimer is not supported on this platform");
+  }
 
-    static bool supported() {
-        return false;
-    }
+  static bool supported() { return false; }
 };
 
 #endif // __linux__

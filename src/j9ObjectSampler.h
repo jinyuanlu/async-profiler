@@ -8,18 +8,19 @@
 
 #include "objectSampler.h"
 
-
 class J9ObjectSampler : public ObjectSampler {
-  public:
-    Error check(Arguments& args);
-    Error start(Arguments& args);
-    void stop();
+public:
+  Error check(Arguments &args);
+  Error start(Arguments &args);
+  void stop();
 
-    static void JNICALL JavaObjectAlloc(jvmtiEnv* jvmti, JNIEnv* jni, jthread thread,
-                                        jobject object, jclass object_klass, jlong size);
+  static void JNICALL JavaObjectAlloc(jvmtiEnv *jvmti, JNIEnv *jni,
+                                      jthread thread, jobject object,
+                                      jclass object_klass, jlong size);
 
-    static void JNICALL VMObjectAlloc(jvmtiEnv* jvmti, JNIEnv* jni, jthread thread,
-                                      jobject object, jclass object_klass, jlong size);
+  static void JNICALL VMObjectAlloc(jvmtiEnv *jvmti, JNIEnv *jni,
+                                    jthread thread, jobject object,
+                                    jclass object_klass, jlong size);
 };
 
 #endif // _J9OBJECTSAMPLER_H

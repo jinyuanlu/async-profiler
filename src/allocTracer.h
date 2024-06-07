@@ -6,39 +6,35 @@
 #ifndef _ALLOCTRACER_H
 #define _ALLOCTRACER_H
 
-#include <signal.h>
-#include <stdint.h>
 #include "engine.h"
 #include "event.h"
 #include "trap.h"
-
+#include <signal.h>
+#include <stdint.h>
 
 class AllocTracer : public Engine {
-  private:
-    static int _trap_kind;
-    static Trap _in_new_tlab;
-    static Trap _outside_tlab;
+private:
+  static int _trap_kind;
+  static Trap _in_new_tlab;
+  static Trap _outside_tlab;
 
-    static u64 _interval;
-    static volatile u64 _allocated_bytes;
+  static u64 _interval;
+  static volatile u64 _allocated_bytes;
 
-    static void recordAllocation(void* ucontext, EventType event_type, uintptr_t rklass,
-                                 uintptr_t total_size, uintptr_t instance_size);
+  static void recordAllocation(void *ucontext, EventType event_type,
+                               uintptr_t rklass, uintptr_t total_size,
+                               uintptr_t instance_size);
 
-  public:
-    const char* title() {
-        return "Allocation profile";
-    }
+public:
+  const char *title() { return "Allocation profile"; }
 
-    const char* units() {
-        return "bytes";
-    }
+  const char *units() { return "bytes"; }
 
-    Error check(Arguments& args);
-    Error start(Arguments& args);
-    void stop();
+  Error check(Arguments &args);
+  Error start(Arguments &args);
+  void stop();
 
-    static void trapHandler(int signo, siginfo_t* siginfo, void* ucontext);
+  static void trapHandler(int signo, siginfo_t *siginfo, void *ucontext);
 };
 
 #endif // _ALLOCTRACER_H

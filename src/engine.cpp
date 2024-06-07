@@ -5,16 +5,10 @@
 
 #include "engine.h"
 
-
 volatile bool Engine::_enabled = false;
 
-Error Engine::check(Arguments& args) {
-    return Error::OK;
-}
+Error Engine::check(Arguments &args) { return Error::OK; }
 
-Error Engine::start(Arguments& args) {
-    return Error::OK;
-}
+Error Engine::start(Arguments &args) { return Error::OK; }
 
-void Engine::stop() {
-}
+void Engine::stop() {}
