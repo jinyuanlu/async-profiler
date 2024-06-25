@@ -695,7 +695,7 @@ void Profiler::fillFrameTypes(ASGCT_CallFrame *frames, int num_frames,
 
 u64 Profiler::recordSample(void *ucontext, u64 counter, EventType event_type,
                            Event *event) {
-  u64 timestamp = OS::nanotime() / 1000000;
+  u64 timestamp = OS::nanotime();
   atomicInc(_total_samples);
 
   int tid = fastThreadId();
