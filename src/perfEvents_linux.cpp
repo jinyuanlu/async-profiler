@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 #include <sys/syscall.h>
 #include <unistd.h>
+#include <iostream>
 
 // Ancient fcntl.h does not define F_SETOWN_EX constants and structures
 #ifndef F_SETOWN_EX
@@ -870,7 +871,13 @@ void PerfEvents::stop() {
 
 int PerfEvents::walk(int tid, void *ucontext, const void **callchain,
                      int max_depth, StackContext *java_ctx) {
+
   PerfEvent *event = &_events[tid];
+  if (event == nullptr) { // Proper check for null event
+    fprintf(stderr, "Error: Event object for Thread ID %d is null\n", tid);
+    return 0;
+  }
+
   if (!event->tryLock()) {
     return 0; // the event is being destroyed
   }

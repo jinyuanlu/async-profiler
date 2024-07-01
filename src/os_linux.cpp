@@ -23,6 +23,7 @@
 #include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
+#include <iostream>
 
 #ifdef __LP64__
 #define MMAP_SYSCALL __NR_mmap
@@ -220,19 +221,28 @@ SigAction OS::installSignalHandler(int signo, SigAction action,
   struct sigaction sa;
   struct sigaction oldsa;
   sigemptyset(&sa.sa_mask);
-  if (handler != NULL) {
+
+  if (handler != NULL && (uintptr_t)handler > 0x1000) {
+    fprintf(stderr, "!!!!!");
     sa.sa_handler = handler;
     sa.sa_flags = 0;
-  } else {
+  } else if (action != NULL) {
     sa.sa_sigaction = action;
     sa.sa_flags = SA_SIGINFO | SA_RESTART;
     if (signo > 0 &&
         signo < sizeof(installed_sigaction) / sizeof(installed_sigaction[0])) {
       installed_sigaction[signo] = action;
     }
+  } else {
+    return NULL; // Handle the error appropriately
   }
 
-  sigaction(signo, &sa, &oldsa);
+  if (sigaction(signo, &sa, &oldsa) == -1) {
+    perror("sigaction");
+    // Handle the error
+  }
+
+  // sigaction(signo, &sa, &oldsa);
   return oldsa.sa_sigaction;
 }
 
