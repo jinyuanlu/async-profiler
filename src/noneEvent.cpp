@@ -54,11 +54,8 @@ long NoneEvent::adjustInterval(long interval, int thread_count) {
 
 void NoneEvent::signalHandler(int signo, siginfo_t *siginfo, void *ucontext) {
   if (!Profiler::instance()->isEventWriterThread()) {
-    // std::cerr << "none event singnal handler" << std::endl;
     ExecutionEvent event(TSC::ticks());
     Profiler::instance()->recordSample(ucontext, 1, PERF_SAMPLE, &event);
-  } else {
-    std::cerr << "unhandling" << std::endl;
   }
 }
 
