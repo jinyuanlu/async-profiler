@@ -3,6 +3,14 @@ PROFILER_VERSION=3.0
 PACKAGE_NAME=async-profiler-$(PROFILER_VERSION)-$(OS_TAG)-$(ARCH_TAG)
 PACKAGE_DIR=/tmp/$(PACKAGE_NAME)
 
+# Set the custom toolchain path
+TOOLCHAIN_PATH=/src/shared-libs/bin
+
+# Use the custom toolchain compilers
+CC=$(TOOLCHAIN_PATH)/x86_64-custom-linux-gnu-gcc
+CXX=$(TOOLCHAIN_PATH)/x86_64-custom-linux-gnu-g++
+STRIP=$(TOOLCHAIN_PATH)/x86_64-custom-linux-gnu-strip
+
 ASPROF=bin/asprof
 JFRCONV=bin/jfrconv
 LIB_PROFILER=lib/libasyncProfiler.$(SOEXT)
