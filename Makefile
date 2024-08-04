@@ -8,12 +8,14 @@ PACKAGE_NAME=async-profiler-$(PROFILER_VERSION)-$(OS_TAG)-$(ARCH_TAG)
 PACKAGE_DIR=/tmp/$(PACKAGE_NAME)
 
 # Set the custom toolchain path
-TOOLCHAIN_PATH=/src/shared-libs/bin
+TOOLCHAIN_PATH=/usr/local/shared-libs
 
 # Use the custom toolchain compilers
-CC=$(TOOLCHAIN_PATH)/x86_64-custom-linux-gnu-gcc
-CXX=$(TOOLCHAIN_PATH)/x86_64-custom-linux-gnu-g++
-STRIP=$(TOOLCHAIN_PATH)/x86_64-custom-linux-gnu-strip
+CC=$(TOOLCHAIN_PATH)/bin/x86_64-custom-linux-gnu-gcc
+CXX=$(TOOLCHAIN_PATH)/bin/x86_64-custom-linux-gnu-g++
+STRIP=$(TOOLCHAIN_PATH)/bin/x86_64-custom-linux-gnu-strip
+
+CUSTOM_LIB_PATH=$(TOOLCHAIN_PATH)/x86_64-custom-linux-gnu/sysroot/lib
 
 ASPROF=bin/asprof
 JFRCONV=bin/jfrconv
@@ -25,6 +27,9 @@ TEST_JAR=test.jar
 CC=$(CROSS_COMPILE)gcc
 CXX=$(CROSS_COMPILE)g++
 STRIP=$(CROSS_COMPILE)strip
+
+# Add linker options for rpath and dynamic linker
+LDFLAGS += -Wl,--rpath=$(CUSTOM_LIB_PATH) -Wl,--dynamic-linker=$(CUSTOM_LIB_PATH)/ld-linux-x86-64.so.2
 
 CFLAGS=-O3 -fno-exceptions
 CXXFLAGS=-O3 -fno-exceptions -fno-omit-frame-pointer -fvisibility=hidden -std=c++14
@@ -152,13 +157,14 @@ build/$(JFRCONV): src/launcher/* build/$(CONVERTER_JAR)
 	$(STRIP) $@
 	cat build/$(CONVERTER_JAR) >> $@
 
+
 build/$(LIB_PROFILER): $(SOURCES) $(HEADERS) $(RESOURCES) $(JAVA_HELPER_CLASSES)
 ifeq ($(MERGE),true)
 	for f in src/*.cpp; do echo '#include "'$$f'"'; done |\
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(DEFS) $(INCLUDES) -fPIC -shared -o $@ -xc++ - $(LIBS)
 else
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(DEFS) $(INCLUDES) -fPIC -shared -o $@ $(SOURCES) $(LIBS)
-endif
+
 
 build/$(API_JAR): $(API_SOURCES)
 	mkdir -p build/api
