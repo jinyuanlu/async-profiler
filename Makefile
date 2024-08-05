@@ -15,7 +15,7 @@ CC=$(TOOLCHAIN_PATH)/bin/x86_64-custom-linux-gnu-gcc
 CXX=$(TOOLCHAIN_PATH)/bin/x86_64-custom-linux-gnu-g++
 STRIP=$(TOOLCHAIN_PATH)/bin/x86_64-custom-linux-gnu-strip
 
-CUSTOM_LIB_PATH=$(TOOLCHAIN_PATH)/x86_64-custom-linux-gnu/sysroot/lib
+# CUSTOM_LIB_PATH=$(TOOLCHAIN_PATH)/x86_64-custom-linux-gnu/sysroot/lib
 
 ASPROF=bin/asprof
 JFRCONV=bin/jfrconv
@@ -24,12 +24,12 @@ API_JAR=jar/async-profiler.jar
 CONVERTER_JAR=jar/jfr-converter.jar
 TEST_JAR=test.jar
 
-CC=$(CROSS_COMPILE)gcc
-CXX=$(CROSS_COMPILE)g++
-STRIP=$(CROSS_COMPILE)strip
+# CC=$(CROSS_COMPILE)gcc
+# CXX=$(CROSS_COMPILE)g++
+# STRIP=$(CROSS_COMPILE)strip
 
 # Add linker options for rpath and dynamic linker
-LDFLAGS += -Wl,--rpath=$(CUSTOM_LIB_PATH) -Wl,--dynamic-linker=$(CUSTOM_LIB_PATH)/ld-linux-x86-64.so.2
+# LDFLAGS += -Wl,--rpath=$(CUSTOM_LIB_PATH) -Wl,--dynamic-linker=$(CUSTOM_LIB_PATH)/ld-linux-x86-64.so.2
 
 CFLAGS=-O3 -fno-exceptions
 CXXFLAGS=-O3 -fno-exceptions -fno-omit-frame-pointer -fvisibility=hidden -std=c++14
