@@ -8,7 +8,7 @@ PACKAGE_NAME=async-profiler-$(PROFILER_VERSION)-$(OS_TAG)-$(ARCH_TAG)
 PACKAGE_DIR=/tmp/$(PACKAGE_NAME)
 
 # Set the custom toolchain path
-TOOLCHAIN_PATH=/usr/ebpf/shared-libs
+TOOLCHAIN_PATH=/src/shared-libs
 
 # Use the custom toolchain compilers
 CC=$(TOOLCHAIN_PATH)/bin/x86_64-custom-linux-gnu-gcc
